@@ -1,0 +1,12 @@
+spring:
+    application: 
+        name: fiap-tc5-ecommerce-session-ms
+    data:
+        mongodb:
+            database: fiap-tc5-ecommerce-session-ms
+            host: localhost
+            port: 27017
+server:
+    port: 8085
+    servlet:
+        context-path: /ecommerce-management/api/v1
