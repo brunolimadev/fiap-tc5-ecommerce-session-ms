@@ -17,11 +17,11 @@ public class CheckExpiredSessions {
     }
 
     /**
-     * Check status waiting payment.
+     * Check expired sessions every 60 seconds
      */
-    @Scheduled(fixedRate = 10000, initialDelay = 4000)
+    @Scheduled(fixedRate = 60000, initialDelay = 4000)
     public void execute() {
-        // sessionService.deleteExpiredSessions();
+        sessionService.deleteExpiredSessions();
     }
 
 }

@@ -16,6 +16,7 @@ import br.com.fiap.fiap_tc5_ecommerce_session_ms.converters.LocalDateTimeToDateC
 
 @Configuration
 public class MongoConfig {
+
     @Bean
     public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory factory, MongoMappingContext context) {
         MappingMongoConverter converter = new MappingMongoConverter(factory, context);

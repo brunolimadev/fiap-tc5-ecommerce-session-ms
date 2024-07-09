@@ -7,6 +7,9 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,14 +24,19 @@ import br.com.fiap.fiap_tc5_ecommerce_session_ms.models.dtos.GetSessionResponse;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.models.dtos.UpdateSessionDataRequestDto;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.repositories.SessionRepository;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.services.SessionService;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class SessionServiceImpl implements SessionService {
 
     private final SessionRepository sessionRepository;
 
-    public SessionServiceImpl(SessionRepository sessionRepository) {
+    private final MongoTemplate mongoTemplate;
+
+    public SessionServiceImpl(SessionRepository sessionRepository, MongoTemplate mongoTemplate) {
         this.sessionRepository = sessionRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
@@ -93,7 +101,13 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void deleteExpiredSessions() {
-        sessionRepository.deleteByExpiresAtBefore();
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("expiresAt").gt(LocalDateTime.now()));
+
+        var result = mongoTemplate.remove(query, SessionModel.class);
+
+        log.info("Deleted sessions: {}", result.getDeletedCount());
     }
 
 }
