@@ -24,6 +24,7 @@ import com.mongodb.client.result.DeleteResult;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.models.SessionModel;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.models.dtos.CreateSessionRequestDto;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.repositories.SessionRepository;
+import br.com.fiap.fiap_tc5_ecommerce_session_ms.repositories.TokenRepository;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.services.impl.SessionServiceImpl;
 
 import static org.assertj.core.api.Assertions.*;
@@ -35,19 +36,22 @@ class SessionServiceImplTest {
     private SessionRepository sessionRepository;
 
     @Mock
+    TokenRepository tokenRepository;
+
+    @Mock
     private MongoTemplate mongoTemplate;
 
     private SessionService sessionService;
 
     @BeforeEach
     public void setUp() {
-        sessionService = new SessionServiceImpl(sessionRepository, mongoTemplate);
+        sessionService = new SessionServiceImpl(sessionRepository, mongoTemplate, tokenRepository);
     }
 
     @Test
     void devePermitirCriarUmaSessao() {
 
-        CreateSessionRequestDto requestMock = new CreateSessionRequestDto("teste");
+        CreateSessionRequestDto requestMock = new CreateSessionRequestDto("teste", "token");
 
         when(sessionRepository.save(any(SessionModel.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -85,6 +89,13 @@ class SessionServiceImplTest {
     void devePermitirDeletarUmaSessao() {
 
         String sessionId = UUID.randomUUID().toString();
+
+        SessionModel sessionModel = SessionModel.builder()
+                .sessionId("teste")
+                .userName("teste")
+                .build();
+
+        when(sessionRepository.findById(any(String.class))).thenReturn(Optional.of(sessionModel));
 
         doNothing().when(sessionRepository).deleteById(anyString());
 
