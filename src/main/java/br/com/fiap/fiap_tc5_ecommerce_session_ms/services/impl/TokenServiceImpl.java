@@ -18,10 +18,13 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public GetRevokedTokenResponseDto getRevokedToken(String sessionId) throws RefusedTokenNotFounded {
-        var result = tokenRepository.findById(sessionId)
-                .orElseThrow(() -> new RefusedTokenNotFounded("Token not found"));
-        return new GetRevokedTokenResponseDto(result.getSessionId(), result.getUsername(), result.getToken(),
-                result.getCreatedAt());
+        var result = tokenRepository.findById(sessionId);
+
+        if (result.isPresent()) {
+            throw new RefusedTokenNotFounded("Token não encontrado");
+        }
+
+        return new GetRevokedTokenResponseDto(sessionId);
     }
 
 }

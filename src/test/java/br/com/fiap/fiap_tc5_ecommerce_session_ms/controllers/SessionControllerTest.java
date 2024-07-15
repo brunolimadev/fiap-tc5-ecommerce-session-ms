@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.fiap.fiap_tc5_ecommerce_session_ms.models.SessionModel;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.models.dtos.CreateSessionRequestDto;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.models.dtos.CreateSessionResponseDto;
 import br.com.fiap.fiap_tc5_ecommerce_session_ms.models.dtos.GetRevokedTokenResponseDto;
@@ -100,8 +99,6 @@ public class SessionControllerTest {
 
         GetRevokedTokenResponseDto response = new GetRevokedTokenResponseDto();
         response.setSessionId("teste");
-        response.setToken("token");
-        response.setUsername("teste");
 
         when(tokenService.getRevokedToken(anyString())).thenReturn(response);
 

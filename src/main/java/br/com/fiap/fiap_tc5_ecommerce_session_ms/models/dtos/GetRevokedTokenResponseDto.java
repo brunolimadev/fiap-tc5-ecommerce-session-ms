@@ -13,7 +13,4 @@ import lombok.Setter;
 @Setter
 public class GetRevokedTokenResponseDto {
     private String sessionId;
-    private String username;
-    private String token;
-    private LocalDateTime createdAt;
 }
