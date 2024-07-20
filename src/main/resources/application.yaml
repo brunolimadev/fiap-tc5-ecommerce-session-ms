@@ -3,9 +3,7 @@ spring:
         name: fiap-tc5-ecommerce-session-ms
     data:
         mongodb:
-            database: fiap-tc5-ecommerce-session-ms
-            host: localhost
-            port: 27017
+            uri: ${MONGO_URL:mongodb://localhost:27017/fiap-tc5-ecommerce-session-ms}
 server:
     port: 8085
     servlet:
