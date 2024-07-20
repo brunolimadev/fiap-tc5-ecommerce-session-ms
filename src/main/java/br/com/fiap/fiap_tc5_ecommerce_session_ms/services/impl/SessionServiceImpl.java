@@ -55,7 +55,7 @@ public class SessionServiceImpl implements SessionService {
                 .createAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusMinutes(60))
                 .token(request.getToken())
-                .sessionData(null)
+                .sessionData(new HashMap<>())
                 .build();
 
         sessionRepository.save(session);
