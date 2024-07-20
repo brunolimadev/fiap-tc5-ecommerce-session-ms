@@ -1,5 +1,6 @@
 package br.com.fiap.fiap_tc5_ecommerce_session_ms.services;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -40,7 +41,9 @@ public class TokenServiceImplTest {
 
         when(tokenRepository.findById(anyString())).thenReturn(tokenModel);
 
-        tokenService.getRevokedToken("sessionId");
+        assertThrows(RefusedTokenNotFounded.class, () -> {
+            tokenService.getRevokedToken("sessionId");
+        });
 
         verify(tokenRepository, times(1)).findById("sessionId");
     }
